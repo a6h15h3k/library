@@ -1,25 +1,5 @@
 let myLibrary = new Array();
 
-//Sample Date
-let test1 = new Movie("Title1", "Director1", 2000, true);
-let test2 = new Movie("Title2", "Director2", 2000, false);
-let test3 = new Movie("Title3", "Director3", 2000, true);
-addMovieToLibrary(test1);
-addMovieToLibrary(test2);
-addMovieToLibrary(test3);
-
-console.log(typeof myLibrary);
-
-myLibrary.forEach(movie => {
-  console.log(movie.title);
-  console.log(movie.toString());
-});
-
-displayMovies();
-
-//Get Elements from DOM
-let titleShowcase = document.querySelector(".collection");
-
 //Movie Object
 function Movie(title, director, year, watched) {
   this.title = title;
@@ -32,7 +12,26 @@ Movie.prototype.toString = function () {
   return this.title + " \nDirected by:" + this.director + " \nRelease in:" + this.year + "\n";
 }
 
-//Logical Functions
+//Sample Date
+let test1 = new Movie("Title1", "Director1", 2000, true);
+let test2 = new Movie("Title2", "Director2", 2000, false);
+let test3 = new Movie("Title3", "Director3", 2000, true);
+addMovieToLibrary(test1);
+addMovieToLibrary(test2);
+addMovieToLibrary(test3);
+
+//Get Elements from DOM
+let titleShowcase = document.querySelector(".collection");
+
+myLibrary.forEach((movie) => {
+  //console.log(movie.toString());
+});
+
+displayMovies();
+
+/*** Logical Functions ***/
+
+//Add a New Movie to myLibrary while checking for Repeats
 function addMovieToLibrary(newMovie) {
   for (let movie of myLibrary) {
     if (movie.title == newMovie.title) {
@@ -43,14 +42,15 @@ function addMovieToLibrary(newMovie) {
   return true;
 }
 
+//Adds all Movies in myLibrary to the DOM
 function displayMovies() {
-  for (let movie of myLibrary) {
-    console.log(makeMovieTitle(movie));
-    //titleShowcase.appendChild(makeMovieTitle(movie));
-  }
+  myLibrary.forEach(movie => {
+    titleShowcase.appendChild(makeMovieTitle(movie));
+  });
 }
 
 /*
+Creates a Movie Display Div with the following Syntax
 <div class="movie">
             <div class="title">The Man Who Laughs</div>
             <div class="director">Paul Leni</div>
@@ -81,6 +81,7 @@ function makeMovieTitle(movie) {
   movieDiv.appendChild(yearDiv);
 
   let watchedCheckBox = document.createElement("input");
+  watchedCheckBox.setAttribute("type", "checkbox");
   watchedCheckBox.classList.add("watched");
   if (movie.watched)
     watchedCheckBox.checked = true;
@@ -88,7 +89,6 @@ function makeMovieTitle(movie) {
 
   let watchedLabel = document.createElement("label");
   watchedLabel.id = ("watchedLabel");
-  //watchedLabel.("watched");
   watchedLabel.textContent = "Watched";
   movieDiv.appendChild(watchedLabel);
 
@@ -97,6 +97,7 @@ function makeMovieTitle(movie) {
 
   let removeButton = document.createElement("button");
   removeButton.classList.add("remove");
+  removeButton.textContent = "Remove";
   movieDiv.appendChild(removeButton);
 
   return movieDiv;
